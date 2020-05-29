@@ -375,7 +375,9 @@ class MarathonSpawner(Spawner):
         docker_container = MarathonDockerContainer(
             image=self.app_image,
             network=self.network_mode,
-            port_mappings=self.get_port_mappings())
+            port_mappings=self.get_port_mappings(),
+            privileged=False,
+            forcePullImage=True)
 
         app_container = MarathonContainer(
             docker=docker_container,
