@@ -123,6 +123,16 @@ class MarathonSpawner(Spawner):
         'BRIDGE',
         help="Enum of BRIDGE or HOST"
         ).tag(config=True)
+    
+    docker_privileged = Unicode(
+        False,
+        help="Flag denoting whether docker container should be launched in privileged mode or not"
+        ).tag(config=True)
+    
+    docker_force_pull_image = Unicode(
+        True,
+        help="Flag denoting whether docker image should be force pulled every time even if tag hasn't changed"
+        ).tag(config=True)
 
     hub_ip_connect = Unicode(
         "",
@@ -376,8 +386,8 @@ class MarathonSpawner(Spawner):
             image=self.app_image,
             network=self.network_mode,
             port_mappings=self.get_port_mappings(),
-            privileged=False,
-            forcePullImage=True)
+            privileged=self.docker_privileged,
+            forcePullImage=self.docker_force_pull_image)
 
         app_container = MarathonContainer(
             docker=docker_container,
